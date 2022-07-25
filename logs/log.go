@@ -2,8 +2,11 @@ package logger
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
@@ -20,7 +23,9 @@ func NewLogger() *zap.SugaredLogger {
 
 	logDir := os.Getenv("LOG_DIR")
 	if _, err := os.Stat(logDir); errors.Is(err, os.ErrNotExist) {
-		os.MkdirAll(logDir, os.ModePerm)
+		path := strings.Split(logDir, "/")
+		os.MkdirAll(filepath.Join(path...), os.ModePerm)
+		os.Create(logDir)
 	}
 
 	conf := zap.NewProductionConfig()
@@ -35,6 +40,7 @@ func NewLogger() *zap.SugaredLogger {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("heer")
 
 	return logger.Sugar()
 }
