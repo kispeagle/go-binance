@@ -7,21 +7,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 var Log *zap.SugaredLogger = NewLogger()
 
-func NewLogger() *zap.SugaredLogger {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal(err)
-	}
+var logDir = "./logs/logs.txt"
 
-	logDir := os.Getenv("LOG_DIR")
-	// logDir := "./dir/temp.txt"
+func NewLogger() *zap.SugaredLogger {
+
 	if _, err := os.Stat(logDir); errors.Is(err, os.ErrNotExist) {
 		path := strings.Split(logDir, "/")
 		os.MkdirAll(filepath.Join(path[:len(path)-1]...), os.ModePerm)
