@@ -2,7 +2,6 @@ package logger
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,10 +21,11 @@ func NewLogger() *zap.SugaredLogger {
 	}
 
 	logDir := os.Getenv("LOG_DIR")
+	// logDir := "./dir/temp.txt"
 	if _, err := os.Stat(logDir); errors.Is(err, os.ErrNotExist) {
 		path := strings.Split(logDir, "/")
 		os.MkdirAll(filepath.Join(path[:len(path)-1]...), os.ModePerm)
-		os.Create(logDir)
+		// os.Create(logDir)
 	}
 
 	conf := zap.NewProductionConfig()
@@ -40,7 +40,6 @@ func NewLogger() *zap.SugaredLogger {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("heer")
 
 	return logger.Sugar()
 }
