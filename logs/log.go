@@ -20,7 +20,7 @@ func NewLogger() *zap.SugaredLogger {
 
 	logDir := os.Getenv("LOG_DIR")
 	if _, err := os.Stat(logDir); errors.Is(err, os.ErrNotExist) {
-		os.Create(logDir)
+		os.MkdirAll(logDir, os.ModePerm)
 	}
 
 	conf := zap.NewProductionConfig()
